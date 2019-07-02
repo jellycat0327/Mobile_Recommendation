@@ -59,10 +59,58 @@ for df in pd.read_csv(open(path_df_D, 'r'), parse_dates=['time'], index_col = ['
     batch += 1
     print('chunk %d done.' %batch) 
     
+#################part_1
+# uic
+data_file = open(path_df_part_1, 'r')
+df_part_1 = pd.read_csv(data_file, index_col = False)
+df_part_1.columns = ['time','user_id','item_id','behavior_type','item_category']
+
+df_part_1_uic = df_part_1.drop_duplicates(['user_id', 'item_id', 'item_category'])[['user_id', 'item_id', 'item_category']]
+
+data_file = open(path_df_part_1_tar, 'r')
+df_part_1_tar = pd.read_csv(data_file, index_col = False, parse_dates = [0])
+df_part_1_tar.columns = ['time','user_id','item_id','behavior_type','item_category']
+
+df_part_1_uic_label_1 = df_part_1_tar[df_part_1_tar['behavior_type'] == 4][['user_id','item_id','item_category']]
+df_part_1_uic_label_1.drop_duplicates(['user_id','item_id'],'last', inplace=True)
+
+df_part_1_uic_label_1['label'] = 1
+df_part_1_uic_label = pd.merge(df_part_1_uic, 
+                               df_part_1_uic_label_1,
+                               on=['user_id','item_id','item_category'], 
+                               how='left').fillna(0).astype('int')
+df_part_1_uic_label.to_csv(path_df_part_1_uic_label, index=False)
 
 
 
+##### part_2 #####
+# uic
+data_file = open(path_df_part_2, 'r')
+df_part_2 = pd.read_csv(data_file, index_col = False)
+df_part_2.columns = ['time','user_id','item_id','behavior_type','item_category']
+df_part_2_uic = df_part_2.drop_duplicates(['user_id', 'item_id', 'item_category'])[['user_id', 'item_id', 'item_category']]
 
+data_file = open(path_df_part_2_tar, 'r')
+df_part_2_tar = pd.read_csv(data_file, index_col = False, parse_dates = [0])
+df_part_2_tar.columns = ['time','user_id','item_id','behavior_type','item_category']
+
+df_part_2_uic_label_1 = df_part_2_tar[df_part_2_tar['behavior_type'] == 4][['user_id','item_id','item_category']]
+df_part_2_uic_label_1.drop_duplicates(['user_id','item_id'],'last', inplace=True)
+df_part_2_uic_label_1['label'] = 1
+df_part_2_uic_label = pd.merge(df_part_2_uic, 
+                               df_part_2_uic_label_1,
+                               on=['user_id','item_id','item_category'], 
+                               how='left').fillna(0).astype('int')
+df_part_2_uic_label.to_csv(path_df_part_2_uic_label, index=False)
+
+
+##### part_3 #####
+# uic 
+data_file = open(path_df_part_3, 'r')
+df_part_3 = pd.read_csv(data_file, index_col = False)
+df_part_3.columns = ['time','user_id','item_id','behavior_type','item_category']
+df_part_3_uic = df_part_3.drop_duplicates(['user_id', 'item_id', 'item_category'])[['user_id', 'item_id', 'item_category']]
+df_part_3_uic.to_csv(path_df_part_3_uic, index=False)
 
 
 
